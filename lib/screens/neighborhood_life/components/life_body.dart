@@ -1,5 +1,8 @@
 import 'package:carrot_app/models/neighborhood_life.dart';
+import 'package:carrot_app/screens/chatting/components/image_container.dart';
+import 'package:carrot_app/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LifeBody extends StatelessWidget{
 
@@ -39,8 +42,21 @@ class LifeBody extends StatelessWidget{
         vertical: 16,
         horizontal: 16,
       ),
-      child: Container(
-        color: Colors.orange[100], height: 30,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            padding: EdgeInsets.all(4),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              color: Color.fromRGBO(247, 247, 247, 1),
+            ),
+            child: Text(
+              neighborhoodLife.category, 
+              style: textTheme().bodyMedium,
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -50,8 +66,27 @@ class LifeBody extends StatelessWidget{
       padding: EdgeInsets.symmetric(
         horizontal: 16,
       ),
-      child: Container(
-        color: Colors.red[100], height: 30,
+      child: Row(
+        children: [
+          ImageContainer(
+            borderRadius: 15, 
+            imageUrl: neighborhoodLife.profileImgUri, 
+            width: 30, 
+            height: 30,
+          ),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "${neighborhoodLife.userName}",
+                  style: textTheme().bodyMedium,
+                ),
+                TextSpan(text: "${neighborhoodLife.location}"),
+                TextSpan(text: " 인증 ${neighborhoodLife.authCount}회"),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -62,8 +97,15 @@ class LifeBody extends StatelessWidget{
         vertical: 16,
         horizontal: 16,
       ),
-      child: Container(
-        color: Colors.blue[100], height: 50,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          neighborhoodLife.content,
+          style: textTheme().bodyLarge,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.start,
+        ),
       ),
     );
   }
@@ -75,8 +117,21 @@ class LifeBody extends StatelessWidget{
         right: 16,
         bottom: 16,
       ),
-      child: Container(
-        color: Colors.black, height: 150,
+      child: Visibility(
+        visible: neighborhoodLife.contentImgUri != '',
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: 16,
+            right: 16,
+            bottom: 16,
+          ),
+          child: Image.network(
+            neighborhoodLife.contentImgUri,
+            height: 200,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
+        ),
       ),
     );
   }
@@ -84,10 +139,37 @@ class LifeBody extends StatelessWidget{
   Padding _buildTail(int commentCount){
     return Padding(
       padding: EdgeInsets.all(16),
-      child: Container(
-        color: Colors.lime[100], height: 50,
+      child: Row(
+         children: [
+          Icon(
+            FontAwesomeIcons.faceSmile,
+            color: Colors.grey,
+            size: 22,
+          ),
+          SizedBox(width: 8),
+          Text(
+            '공감하기',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+          SizedBox(width: 22),
+          Icon(
+            FontAwesomeIcons.message,
+            color: Colors.grey,
+            size: 22,
+          ),
+          SizedBox(width: 8),
+          Text(
+            "${"댓글쓰기"} $commentCount",
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+            ),
+          ),
+         ],
       ),
     );
   }
-
 }
